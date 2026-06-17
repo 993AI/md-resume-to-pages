@@ -1,0 +1,4 @@
+interface:
+  display_name: "MD Resume to Pages"
+  short_description: "Convert Markdown resumes to Word and Pages"
+  default_prompt: "Use $md-resume-to-pages to convert a Markdown resume into a polished Word and Pages resume."
