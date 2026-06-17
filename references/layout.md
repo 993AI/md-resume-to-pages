@@ -17,15 +17,22 @@ The top identity block should be a real 3-row by 5-column table, not a loose vis
 - Column A: portrait photo merged from A1:A3.
 - B1: name.
 - C1: gender.
-- D1:E1: empty gray background, merged if needed.
+- D1 and E1: empty gray background.
 - B2: current company label.
-- C2:E2: current company value merged across columns.
+- C2: current company value. Keep D2 and E2 empty so the table remains a true 3x5 table after Pages import.
 - B3: current role label.
 - C3: current role value.
 - D3: work years label.
 - E3: work years value.
 
 Use a light gray fill for all cells. Remove visible borders with OOXML `w:val="nil"`. Keep the photo inside the merged A1:A3 cell with enough padding so Pages conversion does not overlap or clip it.
+
+For the reference resume copy, Pages reported these measured dimensions for the first table:
+
+- Column widths: 81.35, 90.15, 130.75, 82.40, 116.95 pt.
+- Row heights after Pages import: 28.00, 34.65, 45.05 pt.
+
+When generating from Word, use approximately `1627, 1803, 2615, 1648, 2339` dxa for the five columns and `24, 26.65, 37.05` pt row heights so Pages imports to the measured row heights.
 
 ## Section Tables
 

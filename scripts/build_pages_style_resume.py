@@ -89,6 +89,12 @@ def margins(cell, top=80, start=90, bottom=80, end=90):
         el.set(qn("w:type"), "dxa")
 
 
+def no_wrap(cell):
+    tc_pr = cell._tc.get_or_add_tcPr()
+    if tc_pr.find(qn("w:noWrap")) is None:
+        tc_pr.append(OxmlElement("w:noWrap"))
+
+
 def widths(table, values):
     table.autofit = False
     grid = table._tbl.tblGrid
@@ -432,17 +438,17 @@ def build():
     normal.paragraph_format.space_after = Pt(2)
 
     header = doc.add_table(rows=3, cols=5)
-    widths(header, [1900, 1700, 3100, 1550, 1750])
-    set_row_height(header, 0, 50)
-    set_row_height(header, 1, 54)
-    set_row_height(header, 2, 54)
+    widths(header, [1627, 1803, 2615, 1648, 2339])
+    set_row_height(header, 0, 24)
+    set_row_height(header, 1, 26.65)
+    set_row_height(header, 2, 37.05)
     for row in header.rows:
         for cell in row.cells:
             shade(cell, LIGHT_GRAY)
             no_borders(cell)
     photo_cell = header.cell(0, 0).merge(header.cell(2, 0))
     photo_cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
-    margins(photo_cell, top=35, start=55, bottom=35, end=35)
+    margins(photo_cell, top=60, start=25, bottom=0, end=25)
     clear_paragraph(photo_cell.paragraphs[0])
     photo_p = photo_cell.paragraphs[0]
     photo_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -451,7 +457,7 @@ def build():
     photo_p.paragraph_format.line_spacing = 1.0
     if PHOTO.exists():
         photo_run = photo_p.add_run()
-        photo_run.add_picture(str(PHOTO), width=Cm(2.78), height=Cm(3.70))
+        photo_run.add_picture(str(PHOTO), width=Cm(2.45), height=Cm(3.27))
     current_company = profile_value(profile, "目前公司", "当前公司")
     if not current_company and sections.get("工作经历") and isinstance(sections["工作经历"][0], dict):
         current_company = sections["工作经历"][0]["title"]
@@ -460,11 +466,13 @@ def build():
 
     header_cell_text(header.cell(0, 1), profile_value(profile, "姓名", default="姓名"), size=19, bold=True)
     header_cell_text(header.cell(0, 2), profile_value(profile, "性别"), size=12)
-    blank_top = header.cell(0, 3).merge(header.cell(0, 4))
-    header_cell_text(blank_top, "", size=9.2)
+    header_cell_text(header.cell(0, 3), "", size=9.2)
+    header_cell_text(header.cell(0, 4), "", size=9.2)
     header_cell_text(header.cell(1, 1), "目前公司：", size=12, color=MUTED)
-    company_cell = header.cell(1, 2).merge(header.cell(1, 4))
-    header_cell_text(company_cell, current_company, size=12, bold=True)
+    no_wrap(header.cell(1, 2))
+    header_cell_text(header.cell(1, 2), current_company, size=9.4, bold=True)
+    header_cell_text(header.cell(1, 3), "", size=9.2)
+    header_cell_text(header.cell(1, 4), "", size=9.2)
     header_cell_text(header.cell(2, 1), "目前职位：", size=12, color=MUTED)
     header_cell_text(header.cell(2, 2), current_title, size=12, bold=True)
     header_cell_text(header.cell(2, 3), "工作年限：", size=12, bold=True)
