@@ -360,7 +360,7 @@ def add_gray_band(doc, left, middle, right=None, second=None):
     widths(table, [1900, 5000, 3100])
     for cell in table.rows[0].cells:
         shade(cell, LIGHT_GRAY)
-        no_borders(cell)
+        borders(cell, color=LIGHT_GRAY, size="8")
     cell_text(table.cell(0, 0), left, size=BASE_SIZE, bold=True)
     cell_text(table.cell(0, 1), middle + (f"\n{second}" if second else ""), size=BASE_SIZE, bold=True)
     cell_text(table.cell(0, 2), right or "", size=BASE_SIZE, bold=True)
@@ -391,10 +391,11 @@ def add_key_value_table(doc, rows, label_width=1700, value_width=8300):
     widths(table, [label_width, value_width])
     for row, (label, value) in zip(table.rows, rows):
         label_cell, value_cell = row.cells
-        for cell in row.cells:
-            no_borders(cell)
-            cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
+        no_borders(value_cell)
+        value_cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
         shade(label_cell, LIGHT_GRAY)
+        borders(label_cell, color=LIGHT_GRAY, size="8")
+        label_cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
         cell_text(label_cell, label, size=BASE_SIZE, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
         clear_paragraph(value_cell.paragraphs[0])
         add_p(value_cell, value, size=BASE_SIZE, after=1.2)
@@ -658,7 +659,7 @@ def build():
     for row in header.rows:
         for cell in row.cells:
             shade(cell, LIGHT_GRAY)
-            no_borders(cell)
+            borders(cell, color=LIGHT_GRAY, size="8")
 
     # 照片格（A1:A3 合并）
     photo_cell = header.cell(0, 0).merge(header.cell(2, 0))

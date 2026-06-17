@@ -150,8 +150,26 @@ open /private/tmp/resume-thumb.png
 
 7. Iterate as needed
 
+## Known Issues & Fixes
+
+### PDF 导出后灰色区域出现白色细线
+
+**现象：** Pages 中显示正常，但导出 PDF 后，相邻灰色单元格之间存在细小白线。
+
+**原因：** Quartz PDF 渲染引擎在每个单元格的 `shd` 填充边界处产生亚像素（≈0.25px）缝隙。
+
+**方案：** 对所有灰色单元格使用 `borders(cell, color=LIGHT_GRAY, size="8")` 替代 `no_borders(cell)`。1pt 厚的同色边框填充了亚像素缝隙，在 PDF 中不可见，不影响布局。
+
+已在以下灰色区域代码中内置此方案：
+- 顶部身份区（3×5 表）
+- 灰色条（工作/项目经历的时间-公司行）
+- 专业技能标签列
+
+如白线问题在自定义修改后再次出现，检查灰色单元格是否仍使用了 `no_borders(cell)`，替换为 `borders(cell, color=LIGHT_GRAY, size="8")` 即可。
+
 ## Verification
 
 - Check both `.docx` and `.pages` files exist
 - Inspect the QuickLook thumbnail for layout issues (overlap, clipping, grid lines, spacing)
+- For PDF layout issues, export from Pages and inspect at high zoom
 - The script automatically removes trailing empty paragraphs (docx) and empty sections (pages) to prevent extra blank pages in Pages export
