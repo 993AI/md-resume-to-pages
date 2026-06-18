@@ -4,12 +4,12 @@ on run argv
 	end if
 	set inputPath to item 1 of argv
 	set outputPath to item 2 of argv
+	set inputFile to POSIX file inputPath
+	set outputFile to POSIX file outputPath
 	
 	using terms from application "/Applications/Pages.app"
 		tell application "/Applications/Pages.app"
 			activate
-			set inputFile to POSIX file inputPath
-			set outputFile to POSIX file outputPath
 			open inputFile
 			delay 4
 			set theDoc to front document
