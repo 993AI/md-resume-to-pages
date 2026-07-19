@@ -253,7 +253,9 @@ def parse_resume(md):
 
 
 def strip_md(text):
-    return re.sub(r"\*\*([^*]+)\*\*", r"\1", text).strip()
+    text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
+    text = re.sub(r"^[-*+]\s+", "", text)  # 去掉列表前缀
+    return text.strip()
 
 
 def split_label(line):
@@ -700,19 +702,21 @@ def build():
     header_cell_text(header.cell(1, 4), "", size=HEADER_FONT_SIZE)
     header_cell_text(header.cell(2, 1), "目前职位：", size=HEADER_FONT_SIZE, color=MUTED)
     header_cell_text(header.cell(2, 2), current_title, size=HEADER_FONT_SIZE, bold=True)
-    header_cell_text(header.cell(2, 3), "工作年限：", size=HEADER_FONT_SIZE, bold=True)
+    header_cell_text(header.cell(2, 3), "工作年限：", size=HEADER_FONT_SIZE, color=MUTED)
     header_cell_text(header.cell(2, 4), work_years, size=HEADER_FONT_SIZE, bold=True)
 
     # ---------- 内容区 ----------
     add_info_grid(doc, profile)
     add_intention(doc, profile)
 
-    for section_name in ("个人优势", "专业技能", "工作经历", "项目经历", "教育经历", "自我评价"):
+    for section_name in ("个人优势", "专业技能", "证书资质", "工作经历", "项目经历", "教育经历", "自我评价"):
         if section_name not in sections or not sections[section_name]:
             continue
         add_section_title_row(doc, section_name)
         if section_name == "个人优势":
             add_single_column_table(doc, sections["个人优势"])
+        elif section_name == "证书资质":
+            add_single_column_table(doc, sections["证书资质"])
         elif section_name == "专业技能":
             skill_rows = []
             for line in sections["专业技能"]:
