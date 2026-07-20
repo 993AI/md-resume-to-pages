@@ -709,7 +709,7 @@ def build():
     add_info_grid(doc, profile)
     add_intention(doc, profile)
 
-    for section_name in ("个人优势", "专业技能", "证书资质", "工作经历", "项目经历", "教育经历", "自我评价"):
+    for section_name in ("个人优势", "专业技能", "证书资质", "工作经历", "项目经历", "教育经历", "培训认证", "自我评价"):
         if section_name not in sections or not sections[section_name]:
             continue
         add_section_title_row(doc, section_name)
@@ -717,6 +717,8 @@ def build():
             add_single_column_table(doc, sections["个人优势"])
         elif section_name == "证书资质":
             add_single_column_table(doc, sections["证书资质"])
+        elif section_name == "培训认证":
+            add_single_column_table(doc, sections["培训认证"])
         elif section_name == "专业技能":
             skill_rows = []
             for line in sections["专业技能"]:
